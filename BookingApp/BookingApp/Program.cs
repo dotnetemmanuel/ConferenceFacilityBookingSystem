@@ -16,6 +16,7 @@ namespace BookingApp
                 Console.WriteLine($"Friday:   {week.Friday.PadLeft(10)}");
                 Console.WriteLine($"Saturday: {week.Saturday.PadLeft(10)}");
                 Console.WriteLine($"Sunday:   {week.Sunday.PadLeft(10)}");
+                Console.WriteLine("Test");
 
             }
         }
