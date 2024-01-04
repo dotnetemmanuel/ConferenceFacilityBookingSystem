@@ -22,7 +22,9 @@
 
             while (true)
             {
-                Helpers.Menu.StartMenu();
+                Helpers.Information.ViewFacilitySchedule(1);
+                Console.ReadKey();
+                //Helpers.Menu.StartMenu();
             }
         }
     }

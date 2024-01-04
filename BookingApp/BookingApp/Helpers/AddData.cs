@@ -107,6 +107,16 @@ namespace BookingApp.Helpers
 
         public static void AddFacility()
         {
+            using (var dbContext = new BookingsContext())
+            {
+                Console.WriteLine("Here are the current facilities:");
+                foreach (var facility in dbContext.Facilities)
+                {
+                    Console.WriteLine($"Name: {facility.Name}");
+                    Console.WriteLine($"Room number: {facility.RoomNumber}");
+                }
+            }
+
             bool success;
             Console.WriteLine("Please enter the name of the facility");
             string name = Console.ReadLine();
@@ -181,6 +191,118 @@ namespace BookingApp.Helpers
 
                     dbContext.Weeks.Add(newWeek);
                 }
+                dbContext.SaveChanges();
+            }
+        }
+
+        public static void AddBooking()
+        {
+            using (var dbContext = new BookingsContext())
+            {
+                bool success;
+                Console.WriteLine("Please enter the week for your booking");
+                success = int.TryParse(Console.ReadLine(), out int week);
+                var weekNr = dbContext.Weeks.FirstOrDefault(w => w.Id == week);
+
+                if (weekNr != null)
+                {
+                    Console.WriteLine($"Please enter the day of week {week} for your booking");
+                    string day = Console.ReadLine().Trim().ToLower();
+
+                    // Update the specified day with the user's last name
+                    Console.WriteLine("Please enter your last name");
+                    string lastName = Console.ReadLine();
+
+                    switch (day)
+                    {
+                        case "monday":
+                            weekNr.Monday = lastName;
+                            break;
+                        case "tuesday":
+                            weekNr.Tuesday = lastName;
+                            break;
+                        case "wednesday":
+                            weekNr.Wednesday = lastName;
+                            break;
+                        case "thursday":
+                            weekNr.Thursday = lastName;
+                            break;
+                        case "friday":
+                            weekNr.Friday = lastName;
+                            break;
+                        case "saturday":
+                            weekNr.Saturday = lastName;
+                            break;
+                        case "sunday":
+                            weekNr.Sunday = lastName;
+                            break;
+                        default:
+                            Console.WriteLine("Invalid day input.");
+                            break;
+                    }
+
+                    Console.WriteLine("Please enter the number of the room you want to book");
+                    success = int.TryParse(Console.ReadLine(), out int roomNr);
+
+                    // Add additional logic for room number if needed
+
+                    // Save changes to the database using Entity Framework
+                    dbContext.SaveChanges();
+                    Console.WriteLine($"Value for '{day}' updated successfully.");
+                }
+                else
+                {
+                    Console.WriteLine($"Week {week} not found in the database.");
+                }
+            }
+        }
+
+        //Bulk add Facility test data
+        public static void AddFacilities()
+        {
+            using (var dbContext = new BookingsContext())
+            {
+                dbContext.Facilities.AddRange(
+                    new Facility
+                    {
+                        Name = "Auditorium",
+                        RoomNumber = 101,
+                        Capacity = 200,
+                        Projector = true,
+                        Price = 6000
+                    },
+                    new Facility
+                    {
+                        Name = "The Situation Room",
+                        RoomNumber = 2,
+                        Capacity = 10,
+                        Projector = true,
+                        Price = 1000
+                    },
+                    new Facility
+                    {
+                        Name = "The Amber Room",
+                        RoomNumber = 201,
+                        Capacity = 25,
+                        Projector = true,
+                        Price = 2000
+                    },
+                    new Facility
+                    {
+                        Name = "The Oval Office",
+                        RoomNumber = 202,
+                        Capacity = 5,
+                        Projector = false,
+                        Price = 750
+                    },
+                    new Facility
+                    {
+                        Name = "The Hall of Mirrors",
+                        RoomNumber = 301,
+                        Capacity = 50,
+                        Projector = true,
+                        Price = 3500
+                    });
                 dbContext.SaveChanges();
             }
         }
