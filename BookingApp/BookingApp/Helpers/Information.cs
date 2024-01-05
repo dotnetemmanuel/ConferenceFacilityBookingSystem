@@ -15,14 +15,14 @@ namespace BookingApp.Helpers
 
         }
 
-        public static void PrintWeeklySchedule(int weekNumber)
+        public static void ViewWeeklySchedule(int weekNumber)
         {
             using (var dbContext = new BookingsContext())
             {
                 var week = dbContext.Weeks
-    .Include(w => w.FacilitySchedules)
-        .ThenInclude(fs => fs.Facility)
-    .FirstOrDefault(w => w.Id == weekNumber);
+                    .Include(w => w.FacilitySchedules)
+                    .ThenInclude(fs => fs.Facility)
+                    .FirstOrDefault(w => w.Id == weekNumber);
 
                 if (week != null)
                 {
@@ -56,7 +56,12 @@ namespace BookingApp.Helpers
                                 if (facilitySchedule.AvailabilityStatus != "Available")
                                 {
                                     Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.Write($"{facilitySchedule.AvailabilityStatus}\t".PadRight(26));
+                                    if (facilitySchedule.AvailabilityStatus.Length <= 7)
+                                        Console.Write($"{facilitySchedule.AvailabilityStatus}\t".PadRight(26));
+                                    else
+                                    {
+                                        Console.Write($"{facilitySchedule.AvailabilityStatus}\t".PadRight(19));
+                                    }
                                 }
                                 else
                                 {
@@ -66,6 +71,7 @@ namespace BookingApp.Helpers
                                 }
                             }
                         }
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine();
                     }
                 }
@@ -73,6 +79,28 @@ namespace BookingApp.Helpers
                 {
                     Console.WriteLine($"Week {weekNumber} not found in the database.");
                 }
+            }
+        }
+
+        public static void ViewFacilities()
+        {
+            Console.Clear();
+            Console.WriteLine("Here are the bookable facilities:");
+            Console.WriteLine();
+            using (var dbContext = new BookingsContext())
+            {
+                foreach (var facility in dbContext.Facilities)
+                {
+                    Console.WriteLine($"Facility name: {facility.Name}");
+                    Console.WriteLine($"   Number: {facility.RoomNumber}");
+                    Console.WriteLine($"   Capacity: {facility.Capacity}");
+                    Console.WriteLine($"   Projector: {(facility.Projector ? "Yes" : "No")}");
+                    Console.WriteLine($"   Price: {facility.Price} SEK per day");
+                    Console.WriteLine();
+                }
+                Console.WriteLine("Press any key to go back");
+                Console.ReadKey();
+
             }
         }
     }

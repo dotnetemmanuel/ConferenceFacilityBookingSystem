@@ -114,11 +114,13 @@ namespace BookingApp.Helpers
                 {
                     Console.WriteLine($"Name: {facility.Name}");
                     Console.WriteLine($"Room number: {facility.RoomNumber}");
+                    Console.WriteLine();
                 }
+                Console.WriteLine();
             }
 
             bool success;
-            Console.WriteLine("Please enter the name of the facility");
+            Console.WriteLine("Please enter the name of the facility to add");
             string name = Console.ReadLine();
 
             Console.WriteLine("Please enter the room number (ex.101)");
@@ -169,6 +171,8 @@ namespace BookingApp.Helpers
                 };
                 dbContext.Facilities.Add(facility);
                 dbContext.SaveChanges();
+                Console.WriteLine($"Thank you, {facility.Name} account has been created!");
+                Console.ReadLine();
             }
         }
 
@@ -240,31 +244,42 @@ namespace BookingApp.Helpers
 
                                     dbContext.Bookings.Add(booking);
                                     dbContext.SaveChanges();
-                                    Console.WriteLine($"Booking updated successfully for {dayOfWeek}.");
+                                    Console.WriteLine($"Thank you! You have booked Room {facility.RoomNumber}: {facility.Name} for {dayOfWeek} of week {facilitySchedule.WeekId}.");
+                                    Console.ReadKey();
+
                                 }
                                 else
                                 {
                                     Console.WriteLine($"The facility is already booked for {dayOfWeek}.");
+                                    Console.ReadKey();
                                 }
                             }
                             else
                             {
                                 Console.WriteLine($"Facility schedule not found for room number {roomNr} in week {weekNumber} on {dayOfWeek}.");
+                                Console.ReadKey();
+
                             }
                         }
                         else
                         {
                             Console.WriteLine($"Customer with last name {lastName} not found.");
+                            Console.ReadKey();
+
                         }
                     }
                     else
                     {
                         Console.WriteLine($"Facility with room number {roomNr} not found.");
+                        Console.ReadKey();
+
                     }
                 }
                 else
                 {
                     Console.WriteLine($"Week {weekNumber} not found in the database.");
+                    Console.ReadKey();
+
                 }
             }
         }

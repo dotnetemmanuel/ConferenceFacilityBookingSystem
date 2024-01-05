@@ -11,9 +11,9 @@ namespace BookingApp.Helpers
             while (!loggedIn)
             {
                 Console.Clear();
-                Console.Write("Please enter your username:");
+                Console.Write("Please enter your username: ");
                 string username = Console.ReadLine();
-                Console.Write("Please enter your password");
+                Console.Write("Please enter your password: ");
                 string password = Console.ReadLine();
 
                 using (var dbContext = new BookingsContext())
@@ -48,9 +48,9 @@ namespace BookingApp.Helpers
             while (!loggedIn)
             {
                 Console.Clear();
-                Console.Write("Please enter your username:");
+                Console.Write("Please enter your username: ");
                 string username = Console.ReadLine();
-                Console.Write("Please enter your password");
+                Console.Write("Please enter your password: ");
                 string password = Console.ReadLine();
 
                 using (var dbContext = new BookingsContext())
@@ -80,6 +80,7 @@ namespace BookingApp.Helpers
 
         public static void LogOut()
         {
+            Console.Clear();
             Helpers.Menu.StartMenu();
         }
 

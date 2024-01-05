@@ -18,15 +18,21 @@ namespace BookingApp.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Sets the 'Price' property in 'Facility' to store decimal numbers with 10 digits and 2 decimal places
             modelBuilder.Entity<Facility>().Property(p => p.Price)
                 .HasColumnType("decimal(10,2)");
 
+
+            //Had problems with constraints during update-database so had to implement this to make it work 
+            //When a 'FacilitySchedule' is deleted, all associated 'Bookings' are also deleted (cascade delete)
             modelBuilder.Entity<FacilitySchedule>()
                 .HasMany(fs => fs.Bookings)
                 .WithOne(b => b.FacilitySchedule)
                 .HasForeignKey(b => b.FacilityScheduleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            //Each 'Booking' belongs to one 'FacilitySchedule'
+            //Deletion of a 'FacilitySchedule' linked to a 'Booking' is restricted (prevent deletion)
             modelBuilder.Entity<Booking>()
                 .HasOne(b => b.FacilitySchedule)
                 .WithMany(fs => fs.Bookings)
