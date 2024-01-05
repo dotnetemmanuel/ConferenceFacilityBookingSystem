@@ -1,4 +1,5 @@
 ﻿using BookingApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingApp.Helpers
 {
@@ -14,45 +15,55 @@ namespace BookingApp.Helpers
 
         }
 
-        public static void ViewFacilitySchedule(int week)
+        public static void PrintWeeklySchedule(int weekNumber)
         {
             using (var dbContext = new BookingsContext())
             {
-                var facilities = dbContext.Facilities.ToList();
+                var week = dbContext.Weeks
+                    .Include(w => w.FacilitySchedules)
+                        .ThenInclude(fs => fs.Facility)
+                    .FirstOrDefault(w => w.Id == weekNumber);
 
-                Console.Write("\t".PadRight(9));
-                foreach (var facility in facilities)
+                if (week != null)
                 {
-                    Console.Write($"{facility.Name.PadRight(20)}\t");
-                }
-                Console.WriteLine();
+                    Console.WriteLine($"Week: {week.Id}");
 
-                var weekAvailability = dbContext.Weeks.FirstOrDefault();
+                    // Get distinct room numbers
+                    var roomNumbers = week.FacilitySchedules.Select(fs => fs.Facility.RoomNumber).Distinct().ToList();
 
-                if (weekAvailability != null)
-                {
-                    var properties = typeof(Week).GetProperties();
-
-                    foreach (var property in properties)
+                    Console.Write("\t");
+                    foreach (var roomNumber in roomNumbers)
                     {
-                        if (property.Name != "Id") // Skip the property with the name "Id"
-                        {
-                            Console.Write($"{property.Name.PadRight(12)}\t");
+                        Console.Write($"Room {roomNumber}\t");
+                    }
+                    Console.WriteLine();
 
-                            foreach (var facility in facilities)
+                    string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+
+                    foreach (var day in daysOfWeek)
+                    {
+                        Console.Write($"{day}\t");
+
+                        foreach (var roomNumber in roomNumbers)
+                        {
+                            var facilitySchedule = week.FacilitySchedules.FirstOrDefault(fs =>
+                                fs.DayOfWeek.Equals(day, StringComparison.OrdinalIgnoreCase) &&
+                                fs.Facility.RoomNumber == roomNumber);
+
+                            if (facilitySchedule != null)
                             {
-                                var availability = property.GetValue(weekAvailability);
-                                Console.Write($"{availability.ToString().PadRight(20)}\t");
+                                Console.Write($"{facilitySchedule.AvailabilityStatus}\t");
                             }
-                            Console.WriteLine();
                         }
+                        Console.WriteLine();
                     }
                 }
                 else
                 {
-                    Console.WriteLine("No availability data found for the week.");
+                    Console.WriteLine($"Week {weekNumber} not found in the database.");
                 }
             }
         }
+
     }
 }

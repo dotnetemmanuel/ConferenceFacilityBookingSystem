@@ -5,7 +5,7 @@
 namespace BookingApp.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,26 +19,12 @@ namespace BookingApp.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Administrators", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Bookings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    DayOfWeek = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bookings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -70,10 +56,7 @@ namespace BookingApp.Migrations
                     RoomNumber = table.Column<int>(type: "int", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
                     Projector = table.Column<bool>(type: "bit", nullable: false),
-                    Whiteboard = table.Column<bool>(type: "bit", nullable: false),
-                    VCSoundSystem = table.Column<bool>(type: "bit", nullable: false),
-                    SpeakerMicrophone = table.Column<bool>(type: "bit", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,14 +68,7 @@ namespace BookingApp.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Monday = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tuesday = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Wednesday = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Thursday = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Friday = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Saturday = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Sunday = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
@@ -107,17 +83,12 @@ namespace BookingApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FacilityId = table.Column<int>(type: "int", nullable: false),
                     WeekId = table.Column<int>(type: "int", nullable: false),
-                    BookingId = table.Column<int>(type: "int", nullable: false)
+                    DayOfWeek = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AvailabilityStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FacilitySchedules", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FacilitySchedules_Bookings_BookingId",
-                        column: x => x.BookingId,
-                        principalTable: "Bookings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FacilitySchedules_Facilities_FacilityId",
                         column: x => x.FacilityId,
@@ -132,10 +103,65 @@ namespace BookingApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    FacilityId = table.Column<int>(type: "int", nullable: false),
+                    WeekId = table.Column<int>(type: "int", nullable: false),
+                    FacilityScheduleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Facilities_FacilityId",
+                        column: x => x.FacilityId,
+                        principalTable: "Facilities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bookings_FacilitySchedules_FacilityScheduleId",
+                        column: x => x.FacilityScheduleId,
+                        principalTable: "FacilitySchedules",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Weeks_WeekId",
+                        column: x => x.WeekId,
+                        principalTable: "Weeks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_FacilitySchedules_BookingId",
-                table: "FacilitySchedules",
-                column: "BookingId");
+                name: "IX_Bookings_CustomerId",
+                table: "Bookings",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_FacilityId",
+                table: "Bookings",
+                column: "FacilityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_FacilityScheduleId",
+                table: "Bookings",
+                column: "FacilityScheduleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_WeekId",
+                table: "Bookings",
+                column: "WeekId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FacilitySchedules_FacilityId",
@@ -155,13 +181,13 @@ namespace BookingApp.Migrations
                 name: "Administrators");
 
             migrationBuilder.DropTable(
+                name: "Bookings");
+
+            migrationBuilder.DropTable(
                 name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "FacilitySchedules");
-
-            migrationBuilder.DropTable(
-                name: "Bookings");
 
             migrationBuilder.DropTable(
                 name: "Facilities");

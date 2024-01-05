@@ -22,7 +22,8 @@
 
             while (true)
             {
-                Helpers.Information.ViewFacilitySchedule(1);
+                Helpers.AddData.AddFacilitySchedules();
+                Console.WriteLine("Added FS");
                 Console.ReadKey();
                 //Helpers.Menu.StartMenu();
             }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingApp.Migrations
 {
     [DbContext(typeof(BookingsContext))]
-    [Migration("20240102094147_Init")]
-    partial class Init
+    [Migration("20240105090336_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,7 +48,7 @@ namespace BookingApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -68,11 +68,24 @@ namespace BookingApp.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DayOfWeek")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("FacilityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FacilityScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeekId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("FacilityId");
+
+                    b.HasIndex("FacilityScheduleId");
+
+                    b.HasIndex("WeekId");
 
                     b.ToTable("Bookings");
                 });
@@ -133,22 +146,13 @@ namespace BookingApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<bool>("Projector")
                         .HasColumnType("bit");
 
                     b.Property<int>("RoomNumber")
                         .HasColumnType("int");
-
-                    b.Property<bool>("SpeakerMicrophone")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("VCSoundSystem")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Whiteboard")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -163,8 +167,13 @@ namespace BookingApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
+                    b.Property<string>("AvailabilityStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DayOfWeek")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FacilityId")
                         .HasColumnType("int");
@@ -173,8 +182,6 @@ namespace BookingApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookingId");
 
                     b.HasIndex("FacilityId");
 
@@ -191,44 +198,16 @@ namespace BookingApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Friday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Monday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Saturday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Sunday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Thursday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Tuesday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Wednesday")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Weeks");
                 });
 
-            modelBuilder.Entity("BookingApp.Models.FacilitySchedule", b =>
+            modelBuilder.Entity("BookingApp.Models.Booking", b =>
                 {
-                    b.HasOne("BookingApp.Models.Booking", "Booking")
+                    b.HasOne("BookingApp.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("BookingId")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -238,17 +217,59 @@ namespace BookingApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BookingApp.Models.FacilitySchedule", "FacilitySchedule")
+                        .WithMany("Bookings")
+                        .HasForeignKey("FacilityScheduleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("BookingApp.Models.Week", "Week")
                         .WithMany()
                         .HasForeignKey("WeekId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Booking");
+                    b.Navigation("Customer");
+
+                    b.Navigation("Facility");
+
+                    b.Navigation("FacilitySchedule");
+
+                    b.Navigation("Week");
+                });
+
+            modelBuilder.Entity("BookingApp.Models.FacilitySchedule", b =>
+                {
+                    b.HasOne("BookingApp.Models.Facility", "Facility")
+                        .WithMany("FacilitySchedules")
+                        .HasForeignKey("FacilityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookingApp.Models.Week", "Week")
+                        .WithMany("FacilitySchedules")
+                        .HasForeignKey("WeekId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Facility");
 
                     b.Navigation("Week");
+                });
+
+            modelBuilder.Entity("BookingApp.Models.Facility", b =>
+                {
+                    b.Navigation("FacilitySchedules");
+                });
+
+            modelBuilder.Entity("BookingApp.Models.FacilitySchedule", b =>
+                {
+                    b.Navigation("Bookings");
+                });
+
+            modelBuilder.Entity("BookingApp.Models.Week", b =>
+                {
+                    b.Navigation("FacilitySchedules");
                 });
 #pragma warning restore 612, 618
         }
