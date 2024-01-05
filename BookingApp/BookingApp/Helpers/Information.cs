@@ -20,29 +20,30 @@ namespace BookingApp.Helpers
             using (var dbContext = new BookingsContext())
             {
                 var week = dbContext.Weeks
-                    .Include(w => w.FacilitySchedules)
-                        .ThenInclude(fs => fs.Facility)
-                    .FirstOrDefault(w => w.Id == weekNumber);
+    .Include(w => w.FacilitySchedules)
+        .ThenInclude(fs => fs.Facility)
+    .FirstOrDefault(w => w.Id == weekNumber);
 
                 if (week != null)
                 {
                     Console.WriteLine($"Week: {week.Id}");
 
-                    // Get distinct room numbers
-                    var roomNumbers = week.FacilitySchedules.Select(fs => fs.Facility.RoomNumber).Distinct().ToList();
+                    var roomNumbers = week.FacilitySchedules.Select(fs => fs.Facility.RoomNumber).Distinct().OrderBy(r => r).ToList();
 
-                    Console.Write("\t");
+                    Console.Write("\t\t".PadLeft(0));
                     foreach (var roomNumber in roomNumbers)
                     {
-                        Console.Write($"Room {roomNumber}\t");
+                        Console.Write($"Room {roomNumber}\t".PadRight(19)); // Padding added
                     }
                     Console.WriteLine();
+
 
                     string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
                     foreach (var day in daysOfWeek)
                     {
-                        Console.Write($"{day}\t");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write($"{day}".PadRight(16));
 
                         foreach (var roomNumber in roomNumbers)
                         {
@@ -52,7 +53,17 @@ namespace BookingApp.Helpers
 
                             if (facilitySchedule != null)
                             {
-                                Console.Write($"{facilitySchedule.AvailabilityStatus}\t");
+                                if (facilitySchedule.AvailabilityStatus != "Available")
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.Write($"{facilitySchedule.AvailabilityStatus}\t".PadRight(26));
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                    Console.Write($"{facilitySchedule.AvailabilityStatus}\t".PadRight(20));
+
+                                }
                             }
                         }
                         Console.WriteLine();
@@ -64,6 +75,5 @@ namespace BookingApp.Helpers
                 }
             }
         }
-
     }
 }

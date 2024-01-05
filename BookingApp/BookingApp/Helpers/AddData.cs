@@ -201,7 +201,7 @@ namespace BookingApp.Helpers
                 if (week != null)
                 {
                     Console.WriteLine($"Please enter your last name");
-                    string lastName = Console.ReadLine().Trim().ToLower(); // Normalize input
+                    string lastName = Console.ReadLine().Trim(); // Normalize input
 
                     Console.WriteLine("Please enter the room number");
                     success = int.TryParse(Console.ReadLine(), out int roomNr);
@@ -211,18 +211,18 @@ namespace BookingApp.Helpers
                     if (facility != null)
                     {
                         var customer = dbContext.Customers.FirstOrDefault(c =>
-                            c.LastName.ToLower() == lastName);
+                            c.LastName == lastName);
 
                         if (customer != null)
                         {
                             // Update the availability status for the specified day in the week
                             Console.WriteLine($"Please enter the day of the week for your booking");
-                            string dayOfWeek = Console.ReadLine().Trim(); // Normalize input
+                            string dayOfWeek = Console.ReadLine().Trim();
 
                             var facilitySchedule = dbContext.FacilitySchedules.FirstOrDefault(fs =>
                                 fs.WeekId == weekNumber &&
                                 fs.FacilityId == facility.Id &&
-                                fs.DayOfWeek.ToLower() == dayOfWeek.ToLower());
+                                fs.DayOfWeek == dayOfWeek.ToLower());
 
                             if (facilitySchedule != null)
                             {
@@ -234,7 +234,8 @@ namespace BookingApp.Helpers
                                     {
                                         CustomerId = customer.Id,
                                         FacilityId = facility.Id,
-                                        // No DateTime needed for the booking
+                                        WeekId = weekNumber,
+                                        FacilityScheduleId = facilitySchedule.Id
                                     };
 
                                     dbContext.Bookings.Add(booking);
