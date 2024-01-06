@@ -4,6 +4,11 @@ namespace BookingApp.Helpers
 {
     internal class LogIn
     {
+        public static string adminFirstName = "";
+        public static string adminLastName = "";
+        public static string customerFirstName = "";
+        public static string customerLastName = "";
+
         public static void AdminLogin()
         {
             bool loggedIn = false;
@@ -24,6 +29,8 @@ namespace BookingApp.Helpers
                     {
                         Console.WriteLine($"Login successful! Welcome {admin.FirstName}");
                         loggedIn = true;
+                        adminFirstName = admin.FirstName;
+                        adminLastName = admin.LastName;
                         Helpers.Menu.AdminMenu();
                     }
                     else
@@ -40,6 +47,7 @@ namespace BookingApp.Helpers
                 }
             }
         }
+
 
         public static void CustomerLogin()
         {
@@ -61,6 +69,8 @@ namespace BookingApp.Helpers
                     {
                         Console.WriteLine($"Login successful! Welcome {customer.FirstName}");
                         loggedIn = true;
+                        customerFirstName = customer.FirstName;
+                        customerLastName = customer.LastName;
                         Helpers.Menu.CustomerMenu();
                     }
                     else
@@ -74,6 +84,7 @@ namespace BookingApp.Helpers
                             break; // Exit the loop if the user doesn't want to try again
                         }
                     }
+
                 }
             }
         }

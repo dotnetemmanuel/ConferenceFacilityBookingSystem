@@ -46,7 +46,8 @@
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Admin Dashboard\n");
+                Console.WriteLine($"Admin Dashboard: {Helpers.LogIn.adminFirstName} {Helpers.LogIn.adminLastName}");
+                Console.WriteLine();
                 Console.WriteLine("Please make a choice in the menu below");
                 Console.WriteLine("[1]. Add administrator");
                 Console.WriteLine("[2]. Add customer");
@@ -83,10 +84,10 @@
                         Console.ReadKey();
                         break;
                     case 6:
-                        //Helpers.Info.ViewBookings();
+                        Helpers.Information.ViewBookings();
                         break;
                     case 7:
-                        //Helpers.Info.ViewStatistics();
+                        //Helpers.Information.ViewStatistics();
                         break;
                     case 8:
                         Helpers.LogIn.LogOut();
@@ -105,11 +106,13 @@
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Customer Dashboard\n");
+                Console.WriteLine($"Customer Dashboard: {Helpers.LogIn.customerFirstName} {Helpers.LogIn.customerLastName}");
+                Console.WriteLine();
                 Console.WriteLine("Please make a choice in the menu below");
                 Console.WriteLine("[1]. View facilities");
                 Console.WriteLine("[2]. Book a facility");
-                Console.WriteLine("[3]. Sign out");
+                Console.WriteLine("[3]. Book a facility");
+                Console.WriteLine("[4]. Sign out");
 
                 int menuChoice;
                 bool success = int.TryParse(Console.ReadLine(), out menuChoice);
@@ -126,6 +129,9 @@
                         Helpers.AddData.AddBooking();
                         break;
                     case 3:
+                        Helpers.Information.ViewCustomerBookings();
+                        break;
+                    case 4:
                         Helpers.LogIn.LogOut();
                         break;
                     default:

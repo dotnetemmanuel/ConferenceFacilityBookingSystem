@@ -7,7 +7,68 @@ namespace BookingApp.Helpers
     {
         public static void ViewBookings()
         {
+            using (var dbContext = new BookingsContext())
+            {
+                var bookings = dbContext.Bookings.Include(f => f.Facility).Include(fs => fs.FacilitySchedule).Include(c => c.Customer).ToList();
 
+                foreach (var booking in bookings)
+                {
+                    Console.WriteLine($"Booking number: {booking.Id}");
+                    Console.WriteLine($"Week: {booking.WeekId}");
+                    Console.WriteLine($"Day: {booking.FacilitySchedule.DayOfWeek}");
+                    Console.WriteLine($"Customer: {booking.FacilitySchedule.AvailabilityStatus}");
+                    Console.WriteLine($"Facility: {booking.Facility.Name}");
+                    Console.WriteLine($"Room number: {booking.Facility.RoomNumber}");
+                    Console.WriteLine($"Booking Price: {booking.Facility.Price} SEK");
+                    Console.WriteLine($"Business customer: {(booking.Customer.IsBusinessCustomer ? "yes" : "no")}");
+                    Console.WriteLine();
+                }
+            }
+            Console.ReadKey();
+        }
+
+        public static void ViewFacilities()
+        {
+            Console.Clear();
+            Console.WriteLine("Here are the bookable facilities:");
+            Console.WriteLine();
+            using (var dbContext = new BookingsContext())
+            {
+                foreach (var facility in dbContext.Facilities)
+                {
+                    Console.WriteLine($"Facility name: {facility.Name}");
+                    Console.WriteLine($"   Number: {facility.RoomNumber}");
+                    Console.WriteLine($"   Capacity: {facility.Capacity}");
+                    Console.WriteLine($"   Projector: {(facility.Projector ? "Yes" : "No")}");
+                    Console.WriteLine($"   Price: {facility.Price} SEK per day");
+                    Console.WriteLine();
+                }
+                Console.WriteLine("Press any key to go back");
+                Console.ReadKey();
+
+            }
+        }
+
+        public static void ViewCustomerBookings()
+        {
+            using (var dbContext = new BookingsContext())
+            {
+                var bookings = dbContext.Bookings.Include(f => f.Facility).Include(fs => fs.FacilitySchedule).Where(c => c.Customer.LastName == Helpers.LogIn.customerLastName).ToList();
+
+                foreach (var booking in bookings)
+                {
+                    Console.WriteLine($"Booking number: {booking.Id}");
+                    Console.WriteLine($"Week: {booking.WeekId}");
+                    Console.WriteLine($"Day: {booking.FacilitySchedule.DayOfWeek}");
+                    Console.WriteLine($"Customer: {booking.FacilitySchedule.AvailabilityStatus}");
+                    Console.WriteLine($"Facility: {booking.Facility.Name}");
+                    Console.WriteLine($"Room number: {booking.Facility.RoomNumber}");
+                    Console.WriteLine($"Booking Price: {booking.Facility.Price} SEK");
+                    Console.WriteLine($"Business customer: {(booking.Customer.IsBusinessCustomer ? "yes" : "no")}");
+                    Console.WriteLine();
+                }
+            }
+            Console.ReadKey();
         }
 
         public static void ViewStatistics()
@@ -82,26 +143,6 @@ namespace BookingApp.Helpers
             }
         }
 
-        public static void ViewFacilities()
-        {
-            Console.Clear();
-            Console.WriteLine("Here are the bookable facilities:");
-            Console.WriteLine();
-            using (var dbContext = new BookingsContext())
-            {
-                foreach (var facility in dbContext.Facilities)
-                {
-                    Console.WriteLine($"Facility name: {facility.Name}");
-                    Console.WriteLine($"   Number: {facility.RoomNumber}");
-                    Console.WriteLine($"   Capacity: {facility.Capacity}");
-                    Console.WriteLine($"   Projector: {(facility.Projector ? "Yes" : "No")}");
-                    Console.WriteLine($"   Price: {facility.Price} SEK per day");
-                    Console.WriteLine();
-                }
-                Console.WriteLine("Press any key to go back");
-                Console.ReadKey();
 
-            }
-        }
     }
 }
