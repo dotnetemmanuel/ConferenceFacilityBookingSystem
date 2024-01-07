@@ -64,10 +64,10 @@ namespace BookingApp.Helpers
                     Console.WriteLine($"Facility: {booking.Facility.Name}");
                     Console.WriteLine($"Room number: {booking.Facility.RoomNumber}");
                     Console.WriteLine($"Booking Price: {booking.Facility.Price} SEK");
-                    Console.WriteLine($"Business customer: {(booking.Customer.IsBusinessCustomer ? "yes" : "no")}");
                     Console.WriteLine();
                 }
             }
+            Console.WriteLine("Press any key to continue");
             Console.ReadKey();
         }
 

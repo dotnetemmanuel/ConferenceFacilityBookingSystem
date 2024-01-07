@@ -1,4 +1,5 @@
 ﻿using BookingApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingApp.Helpers
 {
@@ -192,7 +193,7 @@ namespace BookingApp.Helpers
             }
         }
 
-        public static void AddBooking()
+        public static void AddBookingAdmin()
         {
             using (var dbContext = new BookingsContext())
             {
@@ -280,6 +281,129 @@ namespace BookingApp.Helpers
                     Console.WriteLine($"Week {weekNumber} not found in the database.");
                     Console.ReadKey();
 
+                }
+            }
+        }
+
+        public static void AddBookingCustomer()
+        {
+            using (var dbContext = new BookingsContext())
+            {
+                bool success;
+                Console.WriteLine("Please enter the week for your booking");
+                success = int.TryParse(Console.ReadLine(), out int weekNumber);
+
+                var week = dbContext.Weeks.FirstOrDefault(w => w.Id == weekNumber);
+
+                if (week != null)
+                {
+                    Console.WriteLine("Please enter the room number");
+                    success = int.TryParse(Console.ReadLine(), out int roomNr);
+
+                    var facility = dbContext.Facilities.FirstOrDefault(f => f.RoomNumber == roomNr);
+
+                    if (facility != null)
+                    {
+                        var customer = dbContext.Customers.FirstOrDefault(c =>
+                            c.LastName == Helpers.LogIn.customerLastName);
+
+                        if (customer != null)
+                        {
+                            // Update the availability status for the specified day in the week
+                            Console.WriteLine($"Please enter the day of the week for your booking");
+                            string dayOfWeek = Console.ReadLine().Trim();
+
+                            var facilitySchedule = dbContext.FacilitySchedules.FirstOrDefault(fs =>
+                                fs.WeekId == weekNumber &&
+                                fs.FacilityId == facility.Id &&
+                                fs.DayOfWeek == dayOfWeek.ToLower());
+
+                            if (facilitySchedule != null)
+                            {
+                                // Check if the facility is available
+                                if (facilitySchedule.AvailabilityStatus == "Available")
+                                {
+                                    facilitySchedule.AvailabilityStatus = Helpers.LogIn.customerLastName;
+                                    var booking = new Booking
+                                    {
+                                        CustomerId = customer.Id,
+                                        FacilityId = facility.Id,
+                                        WeekId = weekNumber,
+                                        FacilityScheduleId = facilitySchedule.Id
+                                    };
+
+                                    dbContext.Bookings.Add(booking);
+                                    dbContext.SaveChanges();
+                                    Console.WriteLine($"Thank you! You have booked Room {facility.RoomNumber}: {facility.Name} for {dayOfWeek} of week {facilitySchedule.WeekId}.");
+                                    Console.ReadKey();
+
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"The facility is already booked for {dayOfWeek}.");
+                                    Console.ReadKey();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Facility schedule not found for room number {roomNr} in week {weekNumber} on {dayOfWeek}.");
+                                Console.ReadKey();
+
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Customer with last name {Helpers.LogIn.customerLastName} not found.");
+                            Console.ReadKey();
+
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Facility with room number {roomNr} not found.");
+                        Console.ReadKey();
+
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Week {weekNumber} not found in the database.");
+                    Console.ReadKey();
+
+                }
+            }
+        }
+
+        public static void CancelBooking()
+        {
+            bool validBooking = false;
+            while (!validBooking)
+            {
+                Console.Clear();
+                Helpers.Information.ViewCustomerBookings();
+                Console.WriteLine();
+                Console.Write("Please enter the booking number for the booking you want to cancel: ");
+                bool success = int.TryParse(Console.ReadLine(), out int bookingId);
+
+                using (var dbContext = new BookingsContext())
+                {
+                    var bookingToDelete = dbContext.Bookings.Include(fs => fs.FacilitySchedule).FirstOrDefault(b => b.Id == bookingId);
+
+                    if (bookingToDelete != null)
+                    {
+                        var bookingToUpdate = dbContext.FacilitySchedules.FirstOrDefault(b => b.Id == bookingToDelete.FacilityScheduleId);
+                        bookingToUpdate.AvailabilityStatus = "Available";
+                        dbContext.Bookings.Remove(bookingToDelete);
+                        dbContext.SaveChanges();
+                        Console.WriteLine("Booking canceled successfully.");
+                        Console.ReadKey();
+                        validBooking = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("No booking found with this booking number.");
+                        Console.ReadKey();
+                    }
                 }
             }
         }
