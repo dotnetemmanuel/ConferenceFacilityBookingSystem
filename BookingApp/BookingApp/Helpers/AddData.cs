@@ -408,60 +408,51 @@ namespace BookingApp.Helpers
             }
         }
 
-        //Bulk add test data
-        public static void AddFacilities()
+        //##Bulk add test data##
+
+        public static void AddAllTestData()//Calls all following bulk-add methods
+        {
+            AddAdmins();
+            AddCustomers();
+            AddFacilities();
+            AddFacilitySchedules();
+        }
+
+        public static void AddAdmins()
         {
             using (var dbContext = new BookingsContext())
             {
-                dbContext.Facilities.AddRange(
-                    new Facility
+                if (!dbContext.Administrators.Any())
+                {
+                    dbContext.Administrators.AddRange(
+                    new Administrator
                     {
-                        Name = "Auditorium",
-                        RoomNumber = 101,
-                        Capacity = 200,
-                        Projector = true,
-                        Price = 6000
+                        FirstName = "Charles",
+                        LastName = "Xavier",
+                        Email = "charles.xavier@xmen.com",
+                        UserName = "charx",
+                        Password = "wolverine1"
                     },
-                    new Facility
+                    new Administrator
                     {
-                        Name = "The Situation Room",
-                        RoomNumber = 102,
-                        Capacity = 10,
-                        Projector = true,
-                        Price = 1000
-                    },
-                    new Facility
-                    {
-                        Name = "The Amber Room",
-                        RoomNumber = 201,
-                        Capacity = 25,
-                        Projector = true,
-                        Price = 2000
-                    },
-                    new Facility
-                    {
-                        Name = "The Oval Office",
-                        RoomNumber = 202,
-                        Capacity = 5,
-                        Projector = false,
-                        Price = 750
-                    },
-                    new Facility
-                    {
-                        Name = "The Hall of Mirrors",
-                        RoomNumber = 301,
-                        Capacity = 50,
-                        Projector = true,
-                        Price = 3500
-                    });
-                dbContext.SaveChanges();
+                        FirstName = "Logan",
+                        LastName = "Howlett",
+                        Email = "wolverine@xmen.com",
+                        UserName = "wolverine",
+                        Password = "jeanisbest"
+                    }
+                    );
+                    dbContext.SaveChanges();
+                }
             }
         }
         public static void AddCustomers()
         {
             using (var dbContext = new BookingsContext())
             {
-                dbContext.Customers.AddRange(
+                if (!dbContext.Customers.Any())
+                {
+                    dbContext.Customers.AddRange(
                     new Customer
                     {
                         FirstName = "Emmanuel",
@@ -502,62 +493,91 @@ namespace BookingApp.Helpers
                         Address = "Föreningsgatan 10 21152 Malmö",
                         IsBusinessCustomer = false
                     });
-                dbContext.SaveChanges();
+                    dbContext.SaveChanges();
+                }
             }
         }
-        public static void AddAdmins()
+        public static void AddFacilities()
         {
             using (var dbContext = new BookingsContext())
             {
-                dbContext.Administrators.AddRange(
-                    new Administrator
+                if (!dbContext.Facilities.Any())
+                {
+                    dbContext.Facilities.AddRange(
+                    new Facility
                     {
-                        FirstName = "Charles",
-                        LastName = "Xavier",
-                        Email = "charles.xavier@xmen.com",
-                        UserName = "charx",
-                        Password = "wolverine1"
+                        Name = "Auditorium",
+                        RoomNumber = 101,
+                        Capacity = 200,
+                        Projector = true,
+                        Price = 6000
                     },
-                    new Administrator
+                    new Facility
                     {
-                        FirstName = "Logan",
-                        LastName = "Howlett",
-                        Email = "wolverine@xmen.com",
-                        UserName = "wolverine",
-                        Password = "jeanisbest"
-                    }
-                    );
-                dbContext.SaveChanges();
+                        Name = "The Situation Room",
+                        RoomNumber = 102,
+                        Capacity = 10,
+                        Projector = true,
+                        Price = 1000
+                    },
+                    new Facility
+                    {
+                        Name = "The Amber Room",
+                        RoomNumber = 201,
+                        Capacity = 25,
+                        Projector = true,
+                        Price = 2000
+                    },
+                    new Facility
+                    {
+                        Name = "The Oval Office",
+                        RoomNumber = 202,
+                        Capacity = 5,
+                        Projector = false,
+                        Price = 750
+                    },
+                    new Facility
+                    {
+                        Name = "The Hall of Mirrors",
+                        RoomNumber = 301,
+                        Capacity = 50,
+                        Projector = true,
+                        Price = 3500
+                    });
+                    dbContext.SaveChanges();
+                }
             }
         }
         public static void AddFacilitySchedules()
         {
             using (var dbContext = new BookingsContext())
             {
-                var facilities = dbContext.Facilities.ToList();
-
-                for (int weekNumber = 1; weekNumber <= 52; weekNumber++)
+                if (!dbContext.FacilitySchedules.Any())
                 {
-                    foreach (var facility in facilities)
+                    var facilities = dbContext.Facilities.ToList();
+
+                    for (int weekNumber = 1; weekNumber <= 52; weekNumber++)
                     {
-                        string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-
-                        foreach (var dayOfWeek in daysOfWeek)
+                        foreach (var facility in facilities)
                         {
-                            var facilitySchedule = new FacilitySchedule
-                            {
-                                WeekId = weekNumber,
-                                FacilityId = facility.Id,
-                                DayOfWeek = dayOfWeek,
-                                AvailabilityStatus = "Available"
-                            };
+                            string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
-                            dbContext.FacilitySchedules.Add(facilitySchedule);
+                            foreach (var dayOfWeek in daysOfWeek)
+                            {
+                                var facilitySchedule = new FacilitySchedule
+                                {
+                                    WeekId = weekNumber,
+                                    FacilityId = facility.Id,
+                                    DayOfWeek = dayOfWeek,
+                                    AvailabilityStatus = "Available"
+                                };
+
+                                dbContext.FacilitySchedules.Add(facilitySchedule);
+                            }
                         }
                     }
+                    dbContext.SaveChanges();
                 }
-
-                dbContext.SaveChanges();
             }
         }
     }

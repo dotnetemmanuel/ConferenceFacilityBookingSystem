@@ -4,6 +4,7 @@
     {
         static void Main(string[] args)
         {
+            Helpers.AddData.AddAllTestData();
             Helpers.Menu.StartMenu();
         }
     }

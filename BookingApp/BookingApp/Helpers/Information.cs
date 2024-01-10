@@ -9,19 +9,26 @@ namespace BookingApp.Helpers
         {
             using (var dbContext = new BookingsContext())
             {
-                var bookings = dbContext.Bookings.Include(f => f.Facility).Include(fs => fs.FacilitySchedule).Include(c => c.Customer).ToList();
-
-                foreach (var booking in bookings)
+                if (dbContext.Bookings.Any())
                 {
-                    Console.WriteLine($"Booking number: {booking.Id}");
-                    Console.WriteLine($"Week: {booking.WeekId}");
-                    Console.WriteLine($"Day: {booking.FacilitySchedule.DayOfWeek}");
-                    Console.WriteLine($"Customer: {booking.FacilitySchedule.AvailabilityStatus}");
-                    Console.WriteLine($"Facility: {booking.Facility.Name}");
-                    Console.WriteLine($"Room number: {booking.Facility.RoomNumber}");
-                    Console.WriteLine($"Booking Price: {booking.Facility.Price} SEK");
-                    Console.WriteLine($"Business customer: {(booking.Customer.IsBusinessCustomer ? "yes" : "no")}");
-                    Console.WriteLine();
+                    var bookings = dbContext.Bookings.Include(f => f.Facility).Include(fs => fs.FacilitySchedule).Include(c => c.Customer).ToList();
+
+                    foreach (var booking in bookings)
+                    {
+                        Console.WriteLine($"Booking number: {booking.Id}");
+                        Console.WriteLine($"Week: {booking.WeekId}");
+                        Console.WriteLine($"Day: {booking.FacilitySchedule.DayOfWeek}");
+                        Console.WriteLine($"Customer: {booking.FacilitySchedule.AvailabilityStatus}");
+                        Console.WriteLine($"Facility: {booking.Facility.Name}");
+                        Console.WriteLine($"Room number: {booking.Facility.RoomNumber}");
+                        Console.WriteLine($"Booking Price: {booking.Facility.Price} SEK");
+                        Console.WriteLine($"Business customer: {(booking.Customer.IsBusinessCustomer ? "yes" : "no")}");
+                        Console.WriteLine();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No bookings found");
                 }
             }
             Console.ReadKey();
@@ -142,7 +149,5 @@ namespace BookingApp.Helpers
                 }
             }
         }
-
-
     }
 }
