@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Helpers.AddData.AddAllTestData();
+            Helpers.AddData.AddAllTestData();//Runs only if database is not populated with test data
             Helpers.Menu.StartMenu();
         }
     }

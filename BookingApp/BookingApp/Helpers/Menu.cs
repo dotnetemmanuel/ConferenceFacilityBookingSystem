@@ -8,7 +8,15 @@
             while (running)
             {
                 Console.Clear();
-                Console.WriteLine("Welcome to the Duchene Congress Center booking portal\n");
+                Console.WriteLine();
+                Console.WriteLine("╔════════════════════════╗");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("║     Welcome to the     ║");
+                Console.WriteLine("║         Duchene        ║");
+                Console.WriteLine("║     Congress Center    ║");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("╚════════════════════════╝");
+                Console.WriteLine();
                 Console.WriteLine("Please make a choice in the menu below");
                 Console.WriteLine("[1]. Sign in as admin");
                 Console.WriteLine("[2]. Sign in as customer");

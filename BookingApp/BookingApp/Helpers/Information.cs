@@ -60,19 +60,27 @@ namespace BookingApp.Helpers
         {
             using (var dbContext = new BookingsContext())
             {
-                var bookings = dbContext.Bookings.Include(f => f.Facility).Include(fs => fs.FacilitySchedule).Where(c => c.Customer.LastName == Helpers.LogIn.customerLastName).ToList();
-
-                foreach (var booking in bookings)
+                if (dbContext.Bookings.Any())
                 {
-                    Console.WriteLine($"Booking number: {booking.Id}");
-                    Console.WriteLine($"Week: {booking.WeekId}");
-                    Console.WriteLine($"Day: {booking.FacilitySchedule.DayOfWeek}");
-                    Console.WriteLine($"Customer: {booking.FacilitySchedule.AvailabilityStatus}");
-                    Console.WriteLine($"Facility: {booking.Facility.Name}");
-                    Console.WriteLine($"Room number: {booking.Facility.RoomNumber}");
-                    Console.WriteLine($"Booking Price: {booking.Facility.Price} SEK");
-                    Console.WriteLine();
+                    var bookings = dbContext.Bookings.Include(f => f.Facility).Include(fs => fs.FacilitySchedule).Where(c => c.Customer.LastName == Helpers.LogIn.customerLastName).ToList();
+
+                    foreach (var booking in bookings)
+                    {
+                        Console.WriteLine($"Booking number: {booking.Id}");
+                        Console.WriteLine($"Week: {booking.WeekId}");
+                        Console.WriteLine($"Day: {booking.FacilitySchedule.DayOfWeek}");
+                        Console.WriteLine($"Customer: {booking.FacilitySchedule.AvailabilityStatus}");
+                        Console.WriteLine($"Facility: {booking.Facility.Name}");
+                        Console.WriteLine($"Room number: {booking.Facility.RoomNumber}");
+                        Console.WriteLine($"Booking Price: {booking.Facility.Price} SEK");
+                        Console.WriteLine();
+                    }
                 }
+                else
+                {
+                    Console.WriteLine("You do not have any bookings");
+                }
+
             }
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();

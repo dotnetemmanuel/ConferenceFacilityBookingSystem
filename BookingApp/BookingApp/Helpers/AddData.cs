@@ -43,22 +43,22 @@ namespace BookingApp.Helpers
 
         public static void AddCustomer()
         {
-            Console.WriteLine("Please enter your first name");
+            Console.WriteLine("Please enter first name");
             string firstName = Console.ReadLine();
 
-            Console.WriteLine("Please enter your last name");
+            Console.WriteLine("Please enter last name");
             string lastName = Console.ReadLine();
 
-            Console.WriteLine("Please enter your e-mail");
+            Console.WriteLine("Please enter e-mail");
             string email = Console.ReadLine();
 
-            Console.WriteLine("Please enter your username");
+            Console.WriteLine("Please enter username");
             string username = Console.ReadLine();
 
-            Console.WriteLine("Please enter your password");
+            Console.WriteLine("Please enter password");
             string password = Console.ReadLine();
 
-            Console.WriteLine("Please enter your address");
+            Console.WriteLine("Please enter address");
             string address = Console.ReadLine();
 
             bool isBusinessCustomer = false;
@@ -66,7 +66,7 @@ namespace BookingApp.Helpers
 
             while (!isValidInput)
             {
-                Console.WriteLine("Are you a business customer? (y/n)");
+                Console.WriteLine("Business customer? (y/n)");
                 string businessCustomer = Console.ReadLine().ToLower();
 
                 if (businessCustomer == "y")
@@ -101,13 +101,14 @@ namespace BookingApp.Helpers
                 dbContext.Customers.Add(newCustomer);
                 dbContext.SaveChanges();
 
-                Console.WriteLine("Thank you, your customer account has been created!");
+                Console.WriteLine($"Thank you, customer account for {firstName} {lastName} has been created!");
                 Console.ReadLine();
             }
         }
 
         public static void AddFacility()
         {
+            Console.Clear();
             using (var dbContext = new BookingsContext())
             {
                 Console.WriteLine("Here are the current facilities:");
@@ -118,51 +119,61 @@ namespace BookingApp.Helpers
                     Console.WriteLine();
                 }
                 Console.WriteLine();
-            }
 
-            bool success;
-            Console.WriteLine("Please enter the name of the facility to add");
-            string name = Console.ReadLine();
+                bool success;
+                Console.WriteLine("Please enter the name of the facility to add");
+                string name = Console.ReadLine();
 
-            Console.WriteLine("Please enter the room number (ex.101)");
-            int roomNr;
-            success = int.TryParse(Console.ReadLine(), out roomNr);
-
-            Console.WriteLine("Please enter the room capacity");
-            int capacity;
-            success = int.TryParse(Console.ReadLine(), out capacity);
-
-            bool hasProjector = false;
-            bool isValidInput = false;
-
-            while (!isValidInput)
-            {
-                Console.WriteLine("Is the room equipped with a projector? Y/N");
-                string projector = Console.ReadLine().ToLower();
-
-                if (projector == "y")
+                int roomNr = 0;
+                bool roomNrInput = true;
+                while (roomNrInput)
                 {
-                    hasProjector = true;
-                    isValidInput = true;
-                }
-                else if (projector == "n")
-                {
-                    hasProjector = false;
-                    isValidInput = true;
-                }
-                else
-                {
-                    Console.WriteLine("Wrong input, please enter 'Y' or 'N'");
-                }
-            }
+                    Console.WriteLine("Please enter the room number (ex.101)");
+                    success = int.TryParse(Console.ReadLine(), out roomNr);
 
-            Console.WriteLine("Please enter a price for the facility (comma separated, max 2 decimal numbers");
-            decimal price;
-            success = decimal.TryParse(Console.ReadLine(), out price);
+                    if (dbContext.Facilities.Any(f => f.RoomNumber == roomNr))
+                    {
+                        Console.WriteLine("This room already exists. Enter another room number");
+                    }
+                    else
+                    {
+                        roomNrInput = false;
+                    }
+                }
 
-            using (var dbContext = new BookingsContext())
-            {
-                var facility = new Facility()
+                Console.WriteLine("Please enter the room capacity");
+                int capacity;
+                success = int.TryParse(Console.ReadLine(), out capacity);
+
+                bool hasProjector = false;
+                bool isValidInput = false;
+
+                while (!isValidInput)
+                {
+                    Console.WriteLine("Is the room equipped with a projector? Y/N");
+                    string projector = Console.ReadLine().ToLower();
+
+                    if (projector == "y")
+                    {
+                        hasProjector = true;
+                        isValidInput = true;
+                    }
+                    else if (projector == "n")
+                    {
+                        hasProjector = false;
+                        isValidInput = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Wrong input, please enter 'Y' or 'N'");
+                    }
+                }
+
+                Console.WriteLine("Please enter a price for the facility (comma separated, max 2 decimal numbers");
+                decimal price;
+                success = decimal.TryParse(Console.ReadLine(), out price);
+
+                var newFacility = new Facility()
                 {
                     Name = name,
                     RoomNumber = roomNr,
@@ -170,26 +181,11 @@ namespace BookingApp.Helpers
                     Projector = hasProjector,
                     Price = price
                 };
-                dbContext.Facilities.Add(facility);
+                dbContext.Facilities.Add(newFacility);
                 dbContext.SaveChanges();
-                Console.WriteLine($"Thank you, {facility.Name} account has been created!");
+                Console.WriteLine($"Thank you, {newFacility.Name} account has been created!");
                 Console.ReadLine();
-            }
-        }
 
-        public static void AddWeeks()
-        {
-            using (var dbContext = new BookingsContext())
-            {
-                for (int i = 1; i <= 52; i++)
-                {
-                    Week newWeek = new Week
-                    {
-                    };
-
-                    dbContext.Weeks.Add(newWeek);
-                }
-                dbContext.SaveChanges();
             }
         }
 
@@ -408,16 +404,17 @@ namespace BookingApp.Helpers
             }
         }
 
-        //##Bulk add test data##
-
+        //##BULK ADD TEST DATA##
         public static void AddAllTestData()//Calls all following bulk-add methods
         {
             AddAdmins();
             AddCustomers();
             AddFacilities();
             AddFacilitySchedules();
+            AddWeeks();
         }
 
+        //Methods called in AddAllTestData()↴
         public static void AddAdmins()
         {
             using (var dbContext = new BookingsContext())
@@ -575,6 +572,24 @@ namespace BookingApp.Helpers
                                 dbContext.FacilitySchedules.Add(facilitySchedule);
                             }
                         }
+                    }
+                    dbContext.SaveChanges();
+                }
+            }
+        }
+        public static void AddWeeks()
+        {
+            using (var dbContext = new BookingsContext())
+            {
+                if (!dbContext.Weeks.Any())
+                {
+                    for (int i = 1; i <= 52; i++)
+                    {
+                        Week newWeek = new Week
+                        {
+                        };
+
+                        dbContext.Weeks.Add(newWeek);
                     }
                     dbContext.SaveChanges();
                 }
