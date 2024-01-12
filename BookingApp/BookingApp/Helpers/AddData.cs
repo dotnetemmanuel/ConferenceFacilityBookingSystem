@@ -410,8 +410,8 @@ namespace BookingApp.Helpers
             AddAdmins();
             AddCustomers();
             AddFacilities();
-            AddFacilitySchedules();
             AddWeeks();
+            AddFacilitySchedules();
         }
 
         //Methods called in AddAllTestData()↴
@@ -437,6 +437,22 @@ namespace BookingApp.Helpers
                         Email = "wolverine@xmen.com",
                         UserName = "wolverine",
                         Password = "jeanisbest"
+                    },
+                    new Administrator
+                    {
+                        FirstName = "Alice",
+                        LastName = "Johnson",
+                        Email = "alice.johnson@example.com",
+                        UserName = "alice_123",
+                        Password = "securepass1"
+                    },
+                    new Administrator
+                    {
+                        FirstName = "David",
+                        LastName = "Smith",
+                        Email = "david.smith@example.com",
+                        UserName = "david_456",
+                        Password = "strongpassword2"
                     }
                     );
                     dbContext.SaveChanges();
@@ -488,6 +504,26 @@ namespace BookingApp.Helpers
                         UserName = "elikar345",
                         Password = "def678",
                         Address = "Föreningsgatan 10 21152 Malmö",
+                        IsBusinessCustomer = false
+                    },
+                    new Customer
+                    {
+                        FirstName = "Erik",
+                        LastName = "Larsson",
+                        Email = "erik.larsson@example.com",
+                        UserName = "eriklar_123",
+                        Password = "abc123",
+                        Address = "Lillgatan 18, 11235 Gothenburg",
+                        IsBusinessCustomer = false
+                    },
+                    new Customer
+                    {
+                        FirstName = "Anna",
+                        LastName = "Andersson",
+                        Email = "anna.andersson@example.com",
+                        UserName = "anna_456",
+                        Password = "123xyz",
+                        Address = "Västergatan 7, 21122 Malmo",
                         IsBusinessCustomer = false
                     });
                     dbContext.SaveChanges();

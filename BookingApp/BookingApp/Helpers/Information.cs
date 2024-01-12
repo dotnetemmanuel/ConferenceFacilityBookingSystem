@@ -52,7 +52,6 @@ namespace BookingApp.Helpers
                 }
                 Console.WriteLine("Press any key to go back");
                 Console.ReadKey();
-
             }
         }
 
