@@ -631,5 +631,53 @@ namespace BookingApp.Helpers
                 }
             }
         }
+
+        public static void TestAddBookings()
+        {
+            using (var dbContext = new BookingsContext())
+            {
+                if (!dbContext.Bookings.Any())
+                {
+                    var bookingsToAdd = new List<Booking>
+                    {
+                        new Booking { CustomerId = 2, FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 56).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 56).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 56 },
+                        new Booking { CustomerId = 2, FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 6).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 6).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 6 }
+                    };
+
+                    dbContext.Bookings.AddRange(bookingsToAdd);
+
+                    //Following code ensures the booking customer's last name will be displayed as the AvailabilityStatus
+                    var facilitySchedulesToUpdate = dbContext.FacilitySchedules
+                        .Where(fs => bookingsToAdd.Select(b => b.FacilityScheduleId).Contains(fs.Id))
+                        .ToList();
+
+                    foreach (var facilitySchedule in facilitySchedulesToUpdate)
+                    {
+                        var associatedBooking = facilitySchedule.Bookings.FirstOrDefault();
+
+                        if (associatedBooking != null)
+                        {
+                            // Fetch LastName of the associated Customer
+                            var customerLastName = dbContext.Customers
+                                .Where(c => c.Id == associatedBooking.CustomerId)
+                                .Select(c => c.LastName)
+                                .FirstOrDefault();
+
+                            // Log for troubleshooting
+                            Console.WriteLine($"CustomerLastName for BookingId {associatedBooking.Id}: {customerLastName}");
+
+                            // Update the AvailabilityStatus based on the LastName of the associated Customer
+                            facilitySchedule.AvailabilityStatus = customerLastName;
+
+                            // Log for troubleshooting
+                            Console.WriteLine($"Updated AvailabilityStatus: {facilitySchedule.AvailabilityStatus}");
+                        }
+                    }
+
+                    // Save changes to the database
+                    dbContext.SaveChanges();
+                }
+            }
+        }
     }
 }
