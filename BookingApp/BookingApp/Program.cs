@@ -4,9 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Helpers.AddData.AddAllTestData();//Runs only if database is not populated with test data
-            Helpers.AddData.TestAddBookings();
-            Console.ReadKey();
+            Helpers.AddData.AddAllTestData();//Calls all methods adding bulk data if the database is not yet populated
             Helpers.Menu.StartMenu();
         }
     }

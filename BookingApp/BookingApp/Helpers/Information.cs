@@ -57,6 +57,8 @@ namespace BookingApp.Helpers
 
         public static void ViewCustomerBookings()
         {
+            Console.Clear();
+            Console.WriteLine("Bookings for " + Helpers.LogIn.customerFirstName + " " + Helpers.LogIn.customerLastName + "\n");
             using (var dbContext = new BookingsContext())
             {
                 if (dbContext.Bookings.Any())

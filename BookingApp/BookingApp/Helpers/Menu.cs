@@ -45,6 +45,11 @@
                         Console.ReadKey();
                         break;
                 }
+
+                if (!running)
+                {
+                    Environment.Exit(0);
+                }
             }
         }
 
@@ -99,6 +104,8 @@
                         break;
                     case 7:
                         Helpers.Information.ViewBookings();
+                        Console.WriteLine("Press any key to go back");
+                        Console.ReadKey();
                         break;
                     case 8:
                         //Helpers.Information.ViewStatistics();

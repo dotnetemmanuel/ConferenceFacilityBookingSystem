@@ -242,6 +242,7 @@ namespace BookingApp.Helpers
                                     dbContext.Bookings.Add(booking);
                                     dbContext.SaveChanges();
                                     Console.WriteLine($"Thank you! You have booked Room {facility.RoomNumber}: {facility.Name} for {dayOfWeek} of week {facilitySchedule.WeekId}.");
+                                    Console.WriteLine("Press any key to go back");
                                     Console.ReadKey();
 
                                 }
@@ -412,6 +413,8 @@ namespace BookingApp.Helpers
             AddFacilities();
             AddWeeks();
             AddFacilitySchedules();
+
+            AddBookings();
         }
 
         //Methods called in AddAllTestData()↴
@@ -632,7 +635,7 @@ namespace BookingApp.Helpers
             }
         }
 
-        public static void TestAddBookings()
+        public static void AddBookings()
         {
             using (var dbContext = new BookingsContext())
             {
@@ -640,13 +643,62 @@ namespace BookingApp.Helpers
                 {
                     var bookingsToAdd = new List<Booking>
                     {
-                        new Booking { CustomerId = 2, FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 56).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 56).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 56 },
-                        new Booking { CustomerId = 2, FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 6).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 6).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 6 }
-                    };
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 56).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 56).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 56 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 102).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 102).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 102 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 567).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 567).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 567 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1200).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1200).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 1200 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 45).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 45).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 45 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 890).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 890).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 890 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 72).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 72).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 72 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1550).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1550).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 1550 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 30).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 30).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 30 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 110).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 110).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 110 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 130).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 130).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 130 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1600).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1600).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 1600 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 275).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 275).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 275 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 140).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 140).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 140 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 980).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 980).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 980 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 660).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 660).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 660 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 5).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 5).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 5 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 800).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 800).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 800 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 120).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 120).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 120 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 340).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 340).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 340 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 70).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 70).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 70 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 175).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 175).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 175 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1000).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1000).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 1000 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 220).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 220).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 220 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 60).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 60).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 60 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 800).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 800).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 800 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 131).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 131).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 131 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 410).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 410).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 410 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 35).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 35).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 35 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 760).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 760).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 760 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 100).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 100).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 100 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1620).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1620).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 1620 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 920).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 920).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 920 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 50).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 50).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 50 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 480).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 480).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 480 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 15).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 15).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 15 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 150).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 150).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 150 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 550).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 550).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 550 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 200).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 200).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 200 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 111).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 111).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 111 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 370).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 370).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 370 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 75).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 75).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 75 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1040).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1040).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 1040 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 25).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 25).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 25 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1300).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1300).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 1300 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 310).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 310).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 310 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1800).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1800).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 1800 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 90).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 90).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 90 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1250).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 1250).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 1250 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 720).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 720).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 720 },
+                        new Booking { CustomerId = Random.Shared.Next(1,7), FacilityId = dbContext.FacilitySchedules.Where(fs => fs.Id == 890).Select(fs => fs.FacilityId).FirstOrDefault(), WeekId = dbContext.FacilitySchedules.Where(fs => fs.Id == 890).Select(fs => fs.WeekId).FirstOrDefault(), FacilityScheduleId = 890 },
+                                            };
 
                     dbContext.Bookings.AddRange(bookingsToAdd);
 
-                    //Following code ensures the booking customer's last name will be displayed as the AvailabilityStatus
+                    //Following code ensures the booking customer's LastName will be displayed as the AvailabilityStatus
                     var facilitySchedulesToUpdate = dbContext.FacilitySchedules
                         .Where(fs => bookingsToAdd.Select(b => b.FacilityScheduleId).Contains(fs.Id))
                         .ToList();
@@ -657,24 +709,15 @@ namespace BookingApp.Helpers
 
                         if (associatedBooking != null)
                         {
-                            // Fetch LastName of the associated Customer
+                            //Get  LastName of the associated Customer
                             var customerLastName = dbContext.Customers
                                 .Where(c => c.Id == associatedBooking.CustomerId)
                                 .Select(c => c.LastName)
                                 .FirstOrDefault();
 
-                            // Log for troubleshooting
-                            Console.WriteLine($"CustomerLastName for BookingId {associatedBooking.Id}: {customerLastName}");
-
-                            // Update the AvailabilityStatus based on the LastName of the associated Customer
                             facilitySchedule.AvailabilityStatus = customerLastName;
-
-                            // Log for troubleshooting
-                            Console.WriteLine($"Updated AvailabilityStatus: {facilitySchedule.AvailabilityStatus}");
                         }
                     }
-
-                    // Save changes to the database
                     dbContext.SaveChanges();
                 }
             }
