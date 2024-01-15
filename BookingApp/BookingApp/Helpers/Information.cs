@@ -1,10 +1,14 @@
 ﻿using BookingApp.Models;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingApp.Helpers
 {
     internal class Information
     {
+        static string connString = "data source = .\\SQLEXPRESS; initial catalog = FacilityBookingApp; persist security info = True; Integrated Security = True; TrustServerCertificate=True;";
+
         public static void ViewBookings()
         {
             using (var dbContext = new BookingsContext())
@@ -89,7 +93,38 @@ namespace BookingApp.Helpers
 
         public static void ViewStatistics()
         {
+            Console.Clear();
+            //Top 3 most popular facilities
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("Top 3 most popular facilities:");
+            Console.ForegroundColor = ConsoleColor.White;
+            List<dynamic> mostPopularFacilities = Helpers.Information.ShowMostPopularFacility();
+            foreach (var facility in mostPopularFacilities)
+            {
+                Console.WriteLine($"{facility.Name}: {facility.BookingCounts} bookings");
+            }
+            Console.WriteLine();
 
+            //Top 5 most loyal customers
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("Top 5 most loyal customers:");
+            Console.ForegroundColor = ConsoleColor.White;
+            List<dynamic> mostLoyalCustomers = Helpers.Information.ShowMostLoyalCustomers();
+            foreach (var customer in mostLoyalCustomers)
+            {
+                Console.WriteLine($"{customer.Customer}: {customer.BookingCount} bookings");
+            }
+            Console.WriteLine();
+
+            //Percentage of conference center booked
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("Percentage of conference center booked");
+            Console.ForegroundColor = ConsoleColor.White;
+            List<dynamic> percentageBooked = Helpers.Information.ShowPercentageBooked();
+            foreach (var total in percentageBooked)
+            {
+                Console.WriteLine($"Booking percentage for the year: {total.PercentageBooked}% as of {DateTime.Today.ToString("yyy-MM-dd")}");
+            }
         }
 
         public static void ViewWeeklySchedule(int weekNumber)
@@ -157,6 +192,69 @@ namespace BookingApp.Helpers
                     Console.WriteLine($"Week {weekNumber} not found in the database.");
                 }
             }
+        }
+
+        //Statistics for admin
+        public static List<dynamic> ShowMostPopularFacility()
+        {
+            string sql = @"
+                        SELECT TOP 3
+                            f.Name,
+	                        COUNT(b.FacilityId) AS 'BookingCounts' 
+                        FROM 
+                            Bookings b
+                        JOIN Facilities f ON b.FacilityId = f.Id
+                        GROUP BY 
+                            f.Name
+                        ORDER BY 
+                            'BookingCounts' DESC";
+
+            List<dynamic> mostPopularFacilities = new List<dynamic>();
+            using (var connection = new SqlConnection(connString))
+            {
+
+                mostPopularFacilities = connection.Query(sql).ToList();
+            }
+            return mostPopularFacilities;
+        }
+
+        public static List<dynamic> ShowMostLoyalCustomers()
+        {
+            string sql = @"
+                        SELECT TOP 5
+                            CONCAT(c.FirstName, ' ', c.LastName) AS Customer,
+                            COUNT(b.CustomerId) AS 'BookingCount'
+                        FROM 
+                            Bookings b
+                        JOIN Customers c ON b.CustomerId = c.Id
+                        GROUP BY 
+                            c.FirstName,
+                            c.LastName
+                        ORDER BY 
+                            BookingCount DESC";
+
+            List<dynamic> mostLoyalCustomers = new List<dynamic>();
+            using (var connection = new SqlConnection(connString))
+            {
+                mostLoyalCustomers = connection.Query(sql).ToList();
+            }
+            return mostLoyalCustomers;
+        }
+
+        public static List<dynamic> ShowPercentageBooked()
+        {
+            string sql = @"
+                        SELECT
+                            Ceiling((COUNT(CASE WHEN fs.AvailabilityStatus <> 'Available' THEN 1 END) * 100.0) / COUNT(*)) AS PercentageBooked
+                        FROM
+                            FacilitySchedules fs";
+
+            List<dynamic> percentageBooked = new List<dynamic>();
+            using (var connection = new SqlConnection(connString))
+            {
+                percentageBooked = connection.Query(sql).ToList();
+            }
+            return percentageBooked;
         }
     }
 }

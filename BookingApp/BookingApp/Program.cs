@@ -5,7 +5,8 @@
         static void Main(string[] args)
         {
             Helpers.AddData.AddAllTestData();//Calls all methods adding bulk data if the database is not yet populated
-            Helpers.Menu.StartMenu();
+            Helpers.Information.ViewStatistics();
+            //Helpers.Menu.StartMenu();
         }
     }
 }
