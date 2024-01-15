@@ -108,7 +108,7 @@
                         Console.ReadKey();
                         break;
                     case 8:
-                        //Helpers.Information.ViewStatistics();
+                        Helpers.Information.ViewStatistics();
                         break;
                     case 9:
                         Helpers.LogIn.LogOut();

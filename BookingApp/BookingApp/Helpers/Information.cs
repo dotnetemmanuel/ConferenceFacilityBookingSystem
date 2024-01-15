@@ -125,6 +125,20 @@ namespace BookingApp.Helpers
             {
                 Console.WriteLine($"Booking percentage for the year: {total.PercentageBooked}% as of {DateTime.Today.ToString("yyy-MM-dd")}");
             }
+            Console.WriteLine();
+
+            //Percentage of facilities booked with a capacity of at least 50
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("Booking frequency of facilities with a capacity of at least 50");
+            Console.ForegroundColor = ConsoleColor.White;
+            List<dynamic> percentageBookedCapacity = Helpers.Information.ShowPercentageBookedCapacity();
+            foreach (var facility in percentageBookedCapacity)
+            {
+                Console.WriteLine($"{facility.Name}: {facility.PercentageBookedCapacity}%");
+            }
+            Console.WriteLine();
+            Console.WriteLine("Press any key to go back");
+            Console.ReadKey();
         }
 
         public static void ViewWeeklySchedule(int weekNumber)
@@ -255,6 +269,30 @@ namespace BookingApp.Helpers
                 percentageBooked = connection.Query(sql).ToList();
             }
             return percentageBooked;
+        }
+
+        public static List<dynamic> ShowPercentageBookedCapacity()
+        {
+            string sql = @"
+                        SELECT 
+                            f.Name,
+                            COUNT(*) AS BookingCount,
+	                        format(ROUND((COUNT(*) * 100.0) / (SELECT COUNT(*) FROM Bookings), 2),'N') AS PercentageBookedCapacity
+                        FROM 
+                            Bookings b
+                        JOIN FacilitySchedules fs ON b.FacilityScheduleId = fs.Id
+                        JOIN Facilities f ON b.FacilityId = f.Id
+	                    WHERE
+                            f.Capacity>=50
+	                    GROUP BY
+                            f.Name";
+
+            List<dynamic> percentageBookedCapacity = new List<dynamic>();
+            using (var connection = new SqlConnection(connString))
+            {
+                percentageBookedCapacity = connection.Query(sql).ToList();
+            }
+            return percentageBookedCapacity;
         }
     }
 }
