@@ -7,7 +7,11 @@ namespace BookingApp.Helpers
 {
     internal class Information
     {
+        //SQL EXPRESS
         static string connString = "data source = .\\SQLEXPRESS; initial catalog = FacilityBookingApp; persist security info = True; Integrated Security = True; TrustServerCertificate=True;";
+
+        //AZURE
+        //static string connString = "Server=tcp:emmanuelducheneserver.database.windows.net,1433;Initial Catalog=FacilityBookingApp;Persist Security Info=False;User ID=emm_duc;Password=9_wK:ztu8SWZS6k;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public static void ViewBookings()
         {
