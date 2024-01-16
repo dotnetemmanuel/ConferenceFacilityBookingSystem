@@ -85,7 +85,6 @@ namespace BookingApp.Helpers
                 }
             }
 
-
             using (var dbContext = new BookingsContext())
             {
                 var newCustomer = new Customer
@@ -185,7 +184,6 @@ namespace BookingApp.Helpers
                 dbContext.SaveChanges();
                 Console.WriteLine($"Thank you, {newFacility.Name} account has been created!");
                 Console.ReadLine();
-
             }
         }
 
@@ -201,8 +199,8 @@ namespace BookingApp.Helpers
 
                 if (week != null)
                 {
-                    Console.WriteLine($"Please enter your last name");
-                    string lastName = Console.ReadLine().Trim(); // Normalize input
+                    Console.WriteLine($"Please enter the last name");
+                    string lastName = Console.ReadLine().Trim(); // Removes any starting or trailing blank space
 
                     Console.WriteLine("Please enter the room number");
                     success = int.TryParse(Console.ReadLine(), out int roomNr);
@@ -244,7 +242,6 @@ namespace BookingApp.Helpers
                                     Console.WriteLine($"Thank you! You have booked Room {facility.RoomNumber}: {facility.Name} for {dayOfWeek} of week {facilitySchedule.WeekId}.");
                                     Console.WriteLine("Press any key to go back");
                                     Console.ReadKey();
-
                                 }
                                 else
                                 {
@@ -256,28 +253,24 @@ namespace BookingApp.Helpers
                             {
                                 Console.WriteLine($"Facility schedule not found for room number {roomNr} in week {weekNumber} on {dayOfWeek}.");
                                 Console.ReadKey();
-
                             }
                         }
                         else
                         {
                             Console.WriteLine($"Customer with last name {lastName} not found.");
                             Console.ReadKey();
-
                         }
                     }
                     else
                     {
                         Console.WriteLine($"Facility with room number {roomNr} not found.");
                         Console.ReadKey();
-
                     }
                 }
                 else
                 {
                     Console.WriteLine($"Week {weekNumber} not found in the database.");
                     Console.ReadKey();
-
                 }
             }
         }
@@ -333,7 +326,6 @@ namespace BookingApp.Helpers
                                     dbContext.SaveChanges();
                                     Console.WriteLine($"Thank you! You have booked Room {facility.RoomNumber}: {facility.Name} for {dayOfWeek} of week {facilitySchedule.WeekId}.");
                                     Console.ReadKey();
-
                                 }
                                 else
                                 {
@@ -345,28 +337,24 @@ namespace BookingApp.Helpers
                             {
                                 Console.WriteLine($"Facility schedule not found for room number {roomNr} in week {weekNumber} on {dayOfWeek}.");
                                 Console.ReadKey();
-
                             }
                         }
                         else
                         {
                             Console.WriteLine($"Customer with last name {Helpers.LogIn.customerLastName} not found.");
                             Console.ReadKey();
-
                         }
                     }
                     else
                     {
                         Console.WriteLine($"Facility with room number {roomNr} not found.");
                         Console.ReadKey();
-
                     }
                 }
                 else
                 {
                     Console.WriteLine($"Week {weekNumber} not found in the database.");
                     Console.ReadKey();
-
                 }
             }
         }
@@ -462,6 +450,7 @@ namespace BookingApp.Helpers
                 }
             }
         }
+
         public static void AddCustomers()
         {
             using (var dbContext = new BookingsContext())
@@ -533,6 +522,7 @@ namespace BookingApp.Helpers
                 }
             }
         }
+
         public static void AddFacilities()
         {
             using (var dbContext = new BookingsContext())
@@ -584,6 +574,7 @@ namespace BookingApp.Helpers
                 }
             }
         }
+
         public static void AddFacilitySchedules()
         {
             using (var dbContext = new BookingsContext())
@@ -616,6 +607,7 @@ namespace BookingApp.Helpers
                 }
             }
         }
+
         public static void AddWeeks()
         {
             using (var dbContext = new BookingsContext())
@@ -709,7 +701,7 @@ namespace BookingApp.Helpers
 
                         if (associatedBooking != null)
                         {
-                            //Get  LastName of the associated Customer
+                            //Get LastName of the associated Customer
                             var customerLastName = dbContext.Customers
                                 .Where(c => c.Id == associatedBooking.CustomerId)
                                 .Select(c => c.LastName)

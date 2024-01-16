@@ -163,7 +163,7 @@ namespace BookingApp.Helpers
                     Console.Write("".PadLeft(18));
                     foreach (var roomNumber in roomNumbers)
                     {
-                        Console.Write($"Room {roomNumber}\t".PadRight(19)); // Padding added
+                        Console.Write($"Room {roomNumber}\t".PadRight(19));
                     }
                     Console.WriteLine();
 
@@ -186,18 +186,13 @@ namespace BookingApp.Helpers
                                 if (facilitySchedule.AvailabilityStatus != "Available")
                                 {
                                     Console.ForegroundColor = ConsoleColor.Red;
-                                    //if (facilitySchedule.AvailabilityStatus.Length <= 7)
+
                                     Console.Write($"{facilitySchedule.AvailabilityStatus}".PadRight(24));
-                                    //else
-                                    //{
-                                    //    Console.Write($"{facilitySchedule.AvailabilityStatus}".PadRight(19));
-                                    //}
                                 }
                                 else
                                 {
                                     Console.ForegroundColor = ConsoleColor.DarkGreen;
                                     Console.Write($"{facilitySchedule.AvailabilityStatus}\t".PadRight(20));
-
                                 }
                             }
                         }

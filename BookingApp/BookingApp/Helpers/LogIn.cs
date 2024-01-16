@@ -94,6 +94,5 @@ namespace BookingApp.Helpers
             Console.Clear();
             Helpers.Menu.StartMenu();
         }
-
     }
 }
