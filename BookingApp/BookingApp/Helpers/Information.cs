@@ -160,7 +160,7 @@ namespace BookingApp.Helpers
 
                     var roomNumbers = week.FacilitySchedules.Select(fs => fs.Facility.RoomNumber).Distinct().OrderBy(r => r).ToList();
 
-                    Console.Write("\t\t".PadLeft(0));
+                    Console.Write("".PadLeft(18));
                     foreach (var roomNumber in roomNumbers)
                     {
                         Console.Write($"Room {roomNumber}\t".PadRight(19)); // Padding added
@@ -173,7 +173,7 @@ namespace BookingApp.Helpers
                     foreach (var day in daysOfWeek)
                     {
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.Write($"{day}".PadRight(16));
+                        Console.Write($"{day}".PadRight(18));
 
                         foreach (var roomNumber in roomNumbers)
                         {
@@ -186,12 +186,12 @@ namespace BookingApp.Helpers
                                 if (facilitySchedule.AvailabilityStatus != "Available")
                                 {
                                     Console.ForegroundColor = ConsoleColor.Red;
-                                    if (facilitySchedule.AvailabilityStatus.Length <= 7)
-                                        Console.Write($"{facilitySchedule.AvailabilityStatus}\t".PadRight(26));
-                                    else
-                                    {
-                                        Console.Write($"{facilitySchedule.AvailabilityStatus}\t".PadRight(19));
-                                    }
+                                    //if (facilitySchedule.AvailabilityStatus.Length <= 7)
+                                    Console.Write($"{facilitySchedule.AvailabilityStatus}".PadRight(24));
+                                    //else
+                                    //{
+                                    //    Console.Write($"{facilitySchedule.AvailabilityStatus}".PadRight(19));
+                                    //}
                                 }
                                 else
                                 {
