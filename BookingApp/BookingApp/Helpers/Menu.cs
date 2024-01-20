@@ -53,7 +53,7 @@
             }
         }
 
-        public static void AdminMenu()
+        public static async Task AdminMenuAsync()
         {
             while (true)
             {
@@ -72,7 +72,7 @@
                 Console.WriteLine("[9]. LogOut");
 
                 int menuChoice;
-                bool success = int.TryParse(Console.ReadLine(), out menuChoice);
+                bool success = int.TryParse(Console.ReadLine().Trim(), out menuChoice);
 
                 switch (menuChoice)
                 {
@@ -103,8 +103,8 @@
                         Console.ReadKey();
                         break;
                     case 7:
-                        Helpers.Information.ViewBookings();
-                        Console.WriteLine("Press any key to go back");
+                        Console.Clear();
+                        Helpers.Information.ViewBookingsAsync();
                         Console.ReadKey();
                         break;
                     case 8:

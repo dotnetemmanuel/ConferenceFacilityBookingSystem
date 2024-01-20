@@ -13,24 +13,26 @@ namespace BookingApp.Helpers
         //AZURE
         //static string connString = "Server=tcp:emmanuelducheneserver.database.windows.net,1433;Initial Catalog=FacilityBookingApp;Persist Security Info=False;User ID=emm_duc;Password=9_wK:ztu8SWZS6k;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-        public static void ViewBookings()
+        public static async Task ViewBookingsAsync()
         {
             using (var dbContext = new BookingsContext())
             {
-                if (dbContext.Bookings.Any())
+                if (await dbContext.Bookings.AnyAsync())
                 {
-                    var bookings = dbContext.Bookings.Include(f => f.Facility).Include(fs => fs.FacilitySchedule).Include(c => c.Customer).ToList();
+                    var bookings = await dbContext.Bookings.Include(f => f.Facility).Include(fs => fs.FacilitySchedule).Include(c => c.Customer).ToListAsync();
 
                     foreach (var booking in bookings)
                     {
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
                         Console.WriteLine($"Booking number: {booking.Id}");
-                        Console.WriteLine($"Week: {booking.WeekId}");
-                        Console.WriteLine($"Day: {booking.FacilitySchedule.DayOfWeek}");
-                        Console.WriteLine($"Customer: {booking.FacilitySchedule.AvailabilityStatus}");
-                        Console.WriteLine($"Facility: {booking.Facility.Name}");
-                        Console.WriteLine($"Room number: {booking.Facility.RoomNumber}");
-                        Console.WriteLine($"Booking Price: {booking.Facility.Price} SEK");
-                        Console.WriteLine($"Business customer: {(booking.Customer.IsBusinessCustomer ? "yes" : "no")}");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine($" Week: {booking.WeekId}");
+                        Console.WriteLine($" Day: {booking.FacilitySchedule.DayOfWeek}");
+                        Console.WriteLine($" Customer: {booking.FacilitySchedule.AvailabilityStatus}");
+                        Console.WriteLine($" Facility: {booking.Facility.Name}");
+                        Console.WriteLine($" Room number: {booking.Facility.RoomNumber}");
+                        Console.WriteLine($" Booking Price: {booking.Facility.Price} SEK");
+                        Console.WriteLine($" Business customer: {(booking.Customer.IsBusinessCustomer ? "yes" : "no")}");
                         Console.WriteLine();
                     }
                 }
@@ -39,7 +41,7 @@ namespace BookingApp.Helpers
                     Console.WriteLine("No bookings found");
                 }
             }
-            Console.ReadKey();
+            Console.WriteLine("Press any key to go back");
         }
 
         public static void ViewFacilities()
@@ -51,7 +53,9 @@ namespace BookingApp.Helpers
             {
                 foreach (var facility in dbContext.Facilities)
                 {
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine($"Facility name: {facility.Name}");
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"   Number: {facility.RoomNumber}");
                     Console.WriteLine($"   Capacity: {facility.Capacity}");
                     Console.WriteLine($"   Projector: {(facility.Projector ? "Yes" : "No")}");
@@ -75,13 +79,15 @@ namespace BookingApp.Helpers
 
                     foreach (var booking in bookings)
                     {
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
                         Console.WriteLine($"Booking number: {booking.Id}");
-                        Console.WriteLine($"Week: {booking.WeekId}");
-                        Console.WriteLine($"Day: {booking.FacilitySchedule.DayOfWeek}");
-                        Console.WriteLine($"Customer: {booking.FacilitySchedule.AvailabilityStatus}");
-                        Console.WriteLine($"Facility: {booking.Facility.Name}");
-                        Console.WriteLine($"Room number: {booking.Facility.RoomNumber}");
-                        Console.WriteLine($"Booking Price: {booking.Facility.Price} SEK");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine($" Week: {booking.WeekId}");
+                        Console.WriteLine($" Day: {booking.FacilitySchedule.DayOfWeek}");
+                        Console.WriteLine($" Customer: {booking.FacilitySchedule.AvailabilityStatus}");
+                        Console.WriteLine($" Facility: {booking.Facility.Name}");
+                        Console.WriteLine($" Room number: {booking.Facility.RoomNumber}");
+                        Console.WriteLine($" Booking Price: {booking.Facility.Price} SEK");
                         Console.WriteLine();
                     }
                 }

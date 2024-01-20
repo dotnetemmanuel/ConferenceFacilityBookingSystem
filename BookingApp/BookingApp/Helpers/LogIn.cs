@@ -31,7 +31,7 @@ namespace BookingApp.Helpers
                         loggedIn = true;
                         adminFirstName = admin.FirstName;
                         adminLastName = admin.LastName;
-                        Helpers.Menu.AdminMenu();
+                        Helpers.Menu.AdminMenuAsync();
                     }
                     else
                     {
