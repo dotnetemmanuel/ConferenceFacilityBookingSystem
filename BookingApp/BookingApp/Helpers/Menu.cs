@@ -104,7 +104,7 @@
                         break;
                     case 7:
                         Console.Clear();
-                        Helpers.Information.ViewBookingsAsync();
+                        await Helpers.Information.ViewBookingsAsync();
                         Console.ReadKey();
                         break;
                     case 8:
