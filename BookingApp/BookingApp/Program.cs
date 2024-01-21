@@ -2,10 +2,10 @@
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Helpers.AddData.AddAllTestData();//Calls all methods adding bulk data if the database is not yet populated
-            Helpers.Menu.StartMenu();
+            await Helpers.Menu.StartMenu();
         }
     }
 }

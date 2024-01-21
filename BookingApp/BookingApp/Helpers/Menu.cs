@@ -2,7 +2,7 @@
 {
     internal class Menu
     {
-        public static void StartMenu()
+        public static async Task StartMenu()
         {
             bool running = true;
             while (running)
@@ -29,7 +29,7 @@
                 switch (menuChoice)
                 {
                     case 1:
-                        Helpers.LogIn.AdminLogin();
+                        await Helpers.LogIn.AdminLogin();
                         break;
                     case 2:
                         Helpers.LogIn.CustomerLogin();
@@ -55,7 +55,8 @@
 
         public static async Task AdminMenuAsync()
         {
-            while (true)
+            bool running = true;
+            while (running)
             {
                 Console.Clear();
                 Console.WriteLine($"Admin Dashboard: {Helpers.LogIn.adminFirstName} {Helpers.LogIn.adminLastName}");
@@ -111,7 +112,8 @@
                         Helpers.Information.ViewStatistics();
                         break;
                     case 9:
-                        Helpers.LogIn.LogOut();
+                        //Helpers.LogIn.LogOut();
+                        running = false;
                         break;
                     default:
                         Console.WriteLine("Invalid input, try again!");
@@ -123,7 +125,8 @@
 
         public static void CustomerMenu()
         {
-            while (true)
+            bool running = true;
+            while (running)
             {
                 Console.Clear();
                 Console.WriteLine($"Customer Dashboard: {Helpers.LogIn.customerFirstName} {Helpers.LogIn.customerLastName}");
@@ -156,7 +159,7 @@
                         Helpers.AddData.CancelBooking();
                         break;
                     case 5:
-                        Helpers.LogIn.LogOut();
+                        running = false;
                         break;
                     default:
                         Console.WriteLine("Invalid input, try again!");

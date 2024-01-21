@@ -9,7 +9,7 @@ namespace BookingApp.Helpers
         public static string customerFirstName = "";
         public static string customerLastName = "";
 
-        public static void AdminLogin()
+        public static async Task AdminLogin()
         {
             bool loggedIn = false;
 
@@ -31,7 +31,7 @@ namespace BookingApp.Helpers
                         loggedIn = true;
                         adminFirstName = admin.FirstName;
                         adminLastName = admin.LastName;
-                        Helpers.Menu.AdminMenuAsync();
+                        await Helpers.Menu.AdminMenuAsync();
                     }
                     else
                     {
@@ -89,10 +89,10 @@ namespace BookingApp.Helpers
             }
         }
 
-        public static void LogOut()
-        {
-            Console.Clear();
-            Helpers.Menu.StartMenu();
-        }
+        //public static void LogOut()
+        //{
+        //    Console.Clear();
+        //    Helpers.Menu.StartMenu();
+        //}
     }
 }
