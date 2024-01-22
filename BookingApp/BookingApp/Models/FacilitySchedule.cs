@@ -11,6 +11,5 @@
         public string? AvailabilityStatus { get; set; } = "Available";
 
         public ICollection<Booking>? Bookings { get; set; }
-
     }
 }

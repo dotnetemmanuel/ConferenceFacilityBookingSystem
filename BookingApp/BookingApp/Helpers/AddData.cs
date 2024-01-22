@@ -168,7 +168,7 @@ namespace BookingApp.Helpers
                     }
                 }
 
-                Console.WriteLine("Please enter a price for the facility (comma separated, max 2 decimal numbers");
+                Console.WriteLine("Please enter a price for the facility (comma separated, max 2 decimal numbers)");
                 decimal price;
                 success = decimal.TryParse(Console.ReadLine(), out price);
 
@@ -182,7 +182,28 @@ namespace BookingApp.Helpers
                 };
                 dbContext.Facilities.Add(newFacility);
                 dbContext.SaveChanges();
-                Console.WriteLine($"Thank you, {newFacility.Name} account has been created!");
+
+                for (int weekNumber = 1; weekNumber <= 52; weekNumber++)
+                {
+                    string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+
+                    foreach (var dayOfWeek in daysOfWeek)
+                    {
+                        var facilitySchedule = new FacilitySchedule
+                        {
+                            WeekId = weekNumber,
+                            FacilityId = newFacility.Id,
+                            DayOfWeek = dayOfWeek,
+                            AvailabilityStatus = "Available"
+                        };
+
+                        dbContext.FacilitySchedules.Add(facilitySchedule);
+                    }
+                }
+
+                dbContext.SaveChanges();
+
+                Console.WriteLine($"Thank you, the facility {newFacility.Name} has been created!");
                 Console.ReadLine();
             }
         }
