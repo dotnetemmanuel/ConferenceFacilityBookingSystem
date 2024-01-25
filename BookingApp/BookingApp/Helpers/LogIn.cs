@@ -89,10 +89,5 @@ namespace BookingApp.Helpers
             }
         }
 
-        //public static void LogOut()
-        //{
-        //    Console.Clear();
-        //    Helpers.Menu.StartMenu();
-        //}
     }
 }

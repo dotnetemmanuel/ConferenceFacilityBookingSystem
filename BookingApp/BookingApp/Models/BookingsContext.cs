@@ -13,7 +13,10 @@ namespace BookingApp.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //SQLServer
             optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=FacilityBookingApp;Trusted_Connection=True;TrustServerCertificate=True;");
+
+            //Azure
             //optionsBuilder.UseSqlServer(@"Server=tcp:emmanuelducheneserver.database.windows.net,1433;Initial Catalog=FacilityBookingApp;Persist Security Info=False;User ID=emm_duc;Password=9_wK:ztu8SWZS6k;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
